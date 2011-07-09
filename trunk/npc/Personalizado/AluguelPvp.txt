@@ -1,0 +1,170 @@
+//===== Cronus Script ========================================
+//= Aluguel de sala PvP
+//===== Por: =================================================
+//= Ansen
+//===== Descrição: ===========================================
+//= Sala PvP de aluguel com número máximo de players e tempo configurados pelo próprio jogador.
+//= Mapa, preços, número mínimo e máximo de jogadores configuráveis.
+//============================================================
+//==== Versão ================================================
+//== 1.1 =====================================================
+//= Feitas correções no npc
+//= Adicionado opção de colocar senha nas salas.
+//= Adicionado opção para apenas vips alugarem salas.
+//= Adicionado configuração de tempo máximo para se alugar uma sala.
+//============================================================
+
+prontera,150,150,5	script	PvP Aluguel	50,{
+
+//--------Configurações-----------
+set .@n$,"[ ^CC99FF"+strnpcinfo(1)+"^000000 ]";		//nome do npc
+set $@mapa$,"pvp_y_1-1";				//mapa do pvp
+set $@preco,500000;					//preço para criar a arena
+set $@preco2,10000;					//preço para os outros entrarem na arena depois de alugadas.
+set $@minplay,2;					//mínimo de jogadores aceitáveis para criar uma sala.
+set $@maxplay,10;					//máximo de jogadores aceitáveis para criar uma sala.
+set $@minviplev,1;					//level mínimo de vip para alugar uma sala, coloque 0 desativar.
+set $@maxsecs,600;					//tempo máximo, em segundos, em que o player poderá alugar a sala
+//----Fim das configurações-- Início do Script
+
+if($@usando == 1) && ($@compass == 1){
+	mes .@n$;
+	mes "Digite a senha para entrar na sala.";
+	digit $@senharoom2$;
+	next;
+	if($@senharoom$ != $@senharoom2$){ mes .@n$; mes "Infelizmente a senha está incorreta."; close; }
+	if(getmapusers($@mapa$) >= $@maxplayer){ mes .@n$; mes "A sala está com sua capacidade no máximo."; }
+		mes .@n$;
+		mes "Você deseja entrar na sala de PvP?";
+		next;
+			if(select("Sim","Não") == 2) close;
+			{
+				mes .@n$;
+				mes "Você precisa de "+$@preco2+" para poder entrar na arena. Deseja continuar?";
+				next;
+				if(select("Sim","Não") == 2) close;
+				if(getmapusers($@mapa$) >= $@maxplayer){
+				mes .@n$;
+				mes "Infelizmente a sala já está com sua lotação no máximo.";
+				close;
+					}
+			if(zeny < $@preco2){ mes .@n$; mes "Dinheiro insuficiente."; close; }
+			set zeny,zeny - $@preco2;
+				announce "O jogador "+strcharinfo(0)+" entrou na arena.",bc_all;
+				warp $@mapa$,0,0;
+				end;
+		}
+	}
+if($@usando == 1) && ($@compass == 0){
+	if(getmapusers($@mapa$) >= $@maxplayer){ mes .@n$; mes "A sala está com sua capacidade no máximo."; }
+	mes .@n$;
+	mes "Você deseja entrar na sala de PvP?";
+	next;
+		if(select("Sim","Não") == 2) close;
+		{
+			mes .@n$;
+			mes "Você precisa de "+$@preco2+" para poder entrar na arena. Deseja continuar?";
+			next;
+			if(select("Sim","Não") == 2) close;
+			if(getmapusers($@mapa$) >= $@maxplayer){
+			mes .@n$;
+			mes "Infelizmente a sala já está com sua lotação no máximo.";
+			close;
+				}
+		if(zeny < $@preco2){ mes .@n$; mes "Dinheiro insuficiente."; close; }
+		set zeny,zeny - $@preco2;
+			announce "O jogador "+strcharinfo(0)+" entrou na arena.",bc_all;
+			warp $@mapa$,0,0;
+			end;
+	}
+}
+
+if(getgmlevel() < $@minviplev){ mes .@n$; mes "Infelizmente você precisa ser Vip para poder alugar uma sala."; close; }
+	if($@usando == 0){
+		mes .@n$;
+		mes "Olá "+strcharinfo(0)+"!";
+		mes "Deseja criar uma sala de PvP?";
+		next;
+			if(select("Sim, obrigado!","Não, obrigado!") == 2) close;
+			{
+				mes .@n$;
+				mes "Você precisa de "+$@preco+" para alugar uma sala por 1 minuto. Assim que seu tempo acabar todos os usuários serão retirados da sala.";
+				next;
+				mes .@n$;
+				mes "Ainda assim deseja alugar a sala?";
+				next;
+				menu "Sim",sim_s,"Não",-;
+				close;
+			}
+
+sim_s:
+
+mes .@n$;
+mes "Digite o número máximo de pessoas que poderão entrar na sala. Não pode ser maior do que "+$@maxplay+" e menor do que "+$@minplay+".";
+	digit $@maxplayer;
+next;
+	if($@maxplayer < $@minplay) || ($@maxplayer > $@maxplay){ mes .@n$; mes "Eu disse que você não poderia criar esse tipo de sala."; close; }
+mes .@n$;
+mes "Digite O tempo que você quer ficar na sala em segundos. Não pode ser maior do que "+$@maxsecs+" segundos ou menor do que 60 segundos.";
+	digit $@maxtimes;
+next;
+	if($@maxtimes < 60) || ($@maxtimes > $@maxsecs){ mes .@n$; mes "Eu disse que você não poderia criar esse tipo de sala."; close; }
+mes .@n$;
+mes "Coloque a senha da sua sala. Se não quiser senha coloque: nulo.";
+	digit $@senharoom$;
+next;
+mes .@n$;
+mes "Veja se está tudo certo:";
+mes "O número máximo de jogadores é: "+$@maxplayer+"";
+mes "Você quer ficar na sala por: "+$@maxtimes+" segundos.";
+mes "A senha da sua sala é "+$@senharoom$+".";
+next;
+	if(select("Sim","Não") == 2)goto sim_S;
+	{
+		set $@timeon,$@maxtimes*1000;
+		set $@preco_d,$@preco*$@maxtimes/60;
+		if(zeny < $@preco_d){ mes .@n$; mes "Você não possui zeny o suficiente para alugar uma sala."; close; }
+		set zeny,zeny - $@preco_d;
+			mes .@n$;
+			mes "Muito bem, as configurações já estão prontas, vou anunciar para todas sobre a sua sala e te teletransportar imediatamente.";
+			next;
+				if($@senharoom$ == "nulo"){
+				set $@usando,1;
+				announce "O jogador "+strcharinfo(0)+" alugou uma sala de PvP por "+$@maxtimes+" segundos. A sala está sem senha e o número máximo de pessoas para entrar na sala é "+$@maxplayer+".",bc_all;
+				warp $@mapa$,0,0;
+				sleep $@timeon;
+				mapwarp $@mapa$,"prontera",150,150;
+				set $@usando,0;
+				end;
+				}
+		set $@usando,1;
+		set $@compass,1;
+		announce "O jogador "+strcharinfo(0)+" alugou uma sala de PvP por "+$@maxtimes+" segundos. A sala está com senha e o número máximo de pessoas para entrar na sala é "+$@maxplayer+".",bc_all;
+		warp $@mapa$,0,0;
+		sleep $@timeon;
+		mapwarp $@mapa$,"prontera",150,150;
+		set $@usando,0;
+		set $@compass,0;
+		end;
+	}
+}
+
+OnPcDieEvent:
+getmapxy(.@mapaas$,.@xxi,.@yyi,0);
+if(.@mapaas$ == $@mapa$){
+warp $@mapa$,0,0;
+sleep 2000;
+atcommand "@raise";
+}
+end;
+}
+
+//--map-flags--
+
+pvp_y_1-1	mapflag	nowarp
+pvp_y_1-1	mapflag	nowarpto
+pvp_y_1-1	mapflag	noteleport
+pvp_y_1-1	mapflag	nosave	SavePoint
+pvp_y_1-1	mapflag	nomemo
+pvp_y_1-1	mapflag	nopenalty
+pvp_y_1-1	mapflag	noreturn

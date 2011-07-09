@@ -1,0 +1,2 @@
+prontera,150,150,5	script	Curandeira	50,{
+percentheal 100,100;end; }
