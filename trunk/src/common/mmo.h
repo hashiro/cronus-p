@@ -84,7 +84,7 @@
 
 //Max number of characters per account. Note that changing this setting alone is not enough if the client is not hexed to support more characters as well.
 //Note: clients from 2010-04-14aRagexeRE don't need be hexed and the char slot amount is fixed server side.
-#define MAX_CHARS_SLOTS 9	// Max slots, should be multiple of 3. Is the old MAX_CHARS.
+#define MAX_CHARS_SLOTS 12	// Max slots, should be multiple of 3. Is the old MAX_CHARS.
 
 /* You can set here how many character slot you set as available.
  * Character slots bitween MAX_CHARS and MAX_CHARS_SLOTS will be non-available

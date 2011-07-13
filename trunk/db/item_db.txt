@@ -1870,7 +1870,7 @@
 4299,Carta Relógio,Carta Relógio,6,20,,10,,,,,,,,16,,,,,{ bonus3 bAutoSpellWhenHit,"CR_AUTOGUARD",3+7*(getskilllv("CR_AUTOGUARD")==10),30; },{},{ sc_end SC_AUTOGUARD; }
 4300,Carta Quimera,Carta Quimera,6,20,,10,,,,,,,,16,,,,,{ bonus2 bAddEffWhenHit,Eff_Poison,300+600*(BaseJob==Job_Assassin); },{},{}
 4301,Carta Mantis Assassino,Carta Mantis Assassino,6,20,,10,,,,,,,,16,,,,,{ bonus2 bAddEffWhenHit,Eff_Bleeding,600; },{},{}
-4302,Carta Tao Gunka,Carta Tao Gunka,6,20,,10,,,,,,,,16,,,,,{ bonus bMaxHPrate,100; bonus bDef,-50; bonus bMdef,-50; },{},{}
+4302,Carta Tao Gunka,Carta Tao Gunka,6,20,,10,,,,,,,,16,,,,,{ bonus bMaxHPrate,100; bonus bDefrate,-50; bonus bMdefrate,-50; },{},{}
 4303,Carta Cochicho,Carta Cochicho,6,20,,10,,,,,,,,4,,,,,{ bonus bFlee,10; if(readparam(bStr)>=80) bonus bBaseAtk,20; if(readparam(bVit)>=80) bonus bMaxHPrate,3; if(readparam(bLuk)>=80) bonus bCritical,3; },{},{}
 4304,Carta Tamruan,Carta Tamruan,6,20,,10,,,,,,,,32,,,,,{ bonus bDef,2; bonus2 bSkillAtk,"CR_SHIELDCHARGE",10; bonus2 bSkillAtk,"CR_SHIELDBOOMERANG",10; },{},{}
 4305,Carta General Tartaruga,Carta General Tartaruga,6,20,,10,,,,,,,,2,,,,,{ bonus2 bAddRace,RC_NonBoss,20; bonus2 bAddRace,RC_Boss,20; bonus3 bAutoSpell,"SM_MAGNUM",10,30; },{},{}
@@ -1931,7 +1931,7 @@
 4360,Carta_Eremes_Guile,Carta Eremes Guile,6,20,,10,,,,,,,,2,,,,,{ bonus2 bCriticalAddRace,RC_DemiHuman,10; },{},{}
 4361,Carta_Mestre-ferreiro_Howard,Carta Mestre-ferreiro Howard,6,20,,10,,,,,,,,2,,,,,{ bonus bBreakWeaponRate,1000; bonus bBreakArmorRate,700; },{},{}
 4362,Carta_Howard_Alt-Eisen,Carta Howard Alt-Eisen,6,20,,10,,,,,,,,2,,,,,{ bonus bAspdRate,-5; bonus bHit,30; },{},{}
-4363,Carta_Sumo_Sacerdotisa_Margaretha,Carta Sumo Sacerdotisa Margaretha,6,20,,10,,,,,,,,16,,,,,{ bonus5 bAutoSpellWhenHit,"HP_ASSUMPTIO",1,50,BF_WEAPON|BF_MAGIC,0; },{},{}
+4363,Carta_Sumo_Sacerdotisa_Margaretha,Carta Sumo Sacerdotisa Margaretha,6,20,,10,,,,,,,,16,,,,,{ bonus5 bAutoSpellWhenHit,"HP_ASSUMPTIO",5,50,BF_WEAPON|BF_MAGIC,0; },{},{}
 4364,Carta_Margaretha_Sorin,Carta Margaretha Sorin,6,20,,10,,,,,,,,769,,,,,{ bonus bInt,1; bonus5 bAutoSpellWhenHit,"PR_LEXDIVINA",5,150,BF_MAGIC,1; },{},{}
 4365,Carta_Arquimaga_Kathryne,Carta Arquimaga Kathryne,6,20,,10,,,,,,,,769,,,,,{ bonus bIgnoreMDefRace,RC_NonBoss; bonus bCastrate,100; bonus bSPrecovRate,-100; },{},{ heal 0,-2000; }
 4366,Carta_Kathryne_Keyron,Carta Kathryne Keyron,6,20,,10,,,,,,,,769,,,,,{ bonus bCastrate,getrefine()*-1; if(getrefine()>=9) { bonus bMatkRate,2; } },{},{}

@@ -6644,21 +6644,15 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			val4 = 5 + val1*2; //Chance of casting
 			break;
 		case SC_VOLCANO:
-			if (status->def_ele == ELE_FIRE)
 				val2 = val1*10; //Watk increase
-			else
 				val2 = 0;
 			break;
 		case SC_VIOLENTGALE:
-			if (status->def_ele == ELE_WIND)
-				val2 = val1*3; //Flee increase
-			else
+			    val2 = val1*3; //Flee increase
 				val2 = 0;
 			break;
 		case SC_DELUGE:
-			if(status->def_ele == ELE_WATER)
-				val2 = deluge_eff[val1-1]; //HP increase
-			else
+			    val2 = deluge_eff[val1-1]; //HP increase
 				val2 = 0;
 			break;
 		case SC_SUITON:

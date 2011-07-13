@@ -1878,7 +1878,7 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src, struct bl
 					skillratio += 20*skill_lv;
 					break;
 				case AM_ACIDTERROR:
-					skillratio += 40*skill_lv;
+					skillratio += 80*skill_lv;
 					break;
 				case MO_FINGEROFFENSIVE:
 					skillratio+= 50 * skill_lv;
@@ -2829,7 +2829,11 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src, struct bl
 						ele_fix += sd->left_weapon.addele2[i].rate;
 					}
 
-					cardfix=cardfix*(100+sd->right_weapon.addrace[tstatus->race]+sd->left_weapon.addrace[tstatus->race])/100;
+					if(!skill_num == NJ_ISSEN && sd->right_weapon.addrace[tstatus->race])
+						if(!skill_num == PA_SACRIFICE && sd->right_weapon.addrace[tstatus->race])
+                    {
+                        cardfix=cardfix*(100+sd->right_weapon.addrace[tstatus->race]+sd->left_weapon.addrace[tstatus->race])/100;
+                    }
 					cardfix=cardfix*(100+ele_fix)/100;
 					cardfix=cardfix*(100+sd->right_weapon.addsize[tstatus->size]+sd->left_weapon.addsize[tstatus->size])/100;
 					cardfix=cardfix*(100+sd->right_weapon.addrace2[t_race2]+sd->left_weapon.addrace2[t_race2])/100;
@@ -3361,7 +3365,7 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 						break;
 					case NJ_KAMAITACHI:
 					case NPC_ENERGYDRAIN:
-						skillratio += 100*skill_lv;
+						skillratio += 200*skill_lv;
 						break;
 					case NPC_EARTHQUAKE:
 						skillratio += 100 + 100*skill_lv + 100*(skill_lv/2);

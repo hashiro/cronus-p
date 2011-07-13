@@ -20,7 +20,7 @@ void* aMalloc_(size_t size, const char *file, int line, const char *func)
 	void *ret = MALLOC(size, file, line, func);
 	// ShowMessage("%s:%d: in func %s: aMalloc %d\n",file,line,func,size);
 	if (ret == NULL){
-		ShowFatalError("%s:%d: in func %s: aMalloc error out of memory!\n",file,line,func);
+		ShowFatalError("%s:%d: na função %s: aMalloc erro fora de memória!\n",file,line,func);
 		exit(EXIT_FAILURE);
 	}
 

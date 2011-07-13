@@ -371,9 +371,9 @@ static int char_db_kickoffline(DBKey key, void* data, va_list ap)
 void set_all_offline(int id)
 {
 	if (id < 0)
-		ShowNotice("Sending all users offline.\n");
+		ShowNotice("Desconctando usuarios.\n");
 	else
-		ShowNotice("Sending users of map-server %d offline.\n",id);
+		ShowNotice("Desconectado usuarios do map-server %d.\n",id);
 	online_char_db->foreach(online_char_db,char_db_kickoffline,id);
 
 	if (id >= 0 || login_fd <= 0 || session[login_fd]->flag.eof)
@@ -669,7 +669,7 @@ int mmo_char_tosql(int char_id, struct mmo_charstatus* p)
 #endif
 	StringBuf_Destroy(&buf);
 	if (save_status[0]!='\0' && save_log)
-		ShowInfo("Saved char %d - %s:%s.\n", char_id, p->name, save_status);
+		ShowInfo("Personagem salvo %d - %s:%s.\n", char_id, p->name, save_status);
 #ifndef TXT_SQL_CONVERT
 	memcpy(cp, p, sizeof(struct mmo_charstatus));
 #else
@@ -697,7 +697,7 @@ int memitemdata_to_sql(const struct item items[], int max, int id, int tableswit
 	case TABLE_STORAGE:       tablename = storage_db;       selectoption = "account_id"; break;
 	case TABLE_GUILD_STORAGE: tablename = guild_storage_db; selectoption = "guild_id";   break;
 	default:
-		ShowError("Invalid table name!\n");
+		ShowError("Nome de coluna invalida!\n");
 		return 1;
 	}
 
@@ -930,7 +930,7 @@ int mmo_char_fromsql(int char_id, struct mmo_charstatus* p, bool load_everything
 
 	memset(p, 0, sizeof(struct mmo_charstatus));
 	
-	if (save_log) ShowInfo("Char load request (%d)\n", char_id);
+	if (save_log) ShowInfo("Requisitando informacoes do personagem (%d)\n", char_id);
 
 	stmt = SqlStmt_Malloc(sql_handle);
 	if( stmt == NULL )
@@ -1009,7 +1009,7 @@ int mmo_char_fromsql(int char_id, struct mmo_charstatus* p, bool load_everything
 	}
 	if( SQL_ERROR == SqlStmt_NextRow(stmt) )
 	{
-		ShowError("Requested non-existant character id: %d!\n", char_id);
+		ShowError("Personagem inexistente requisitado id: %d!\n", char_id);
 		SqlStmt_Free(stmt);
 		return 0;	
 	}
@@ -1117,7 +1117,7 @@ int mmo_char_fromsql(int char_id, struct mmo_charstatus* p, bool load_everything
 		if( tmp_skill.id < ARRAYLENGTH(p->skill) )
 			memcpy(&p->skill[tmp_skill.id], &tmp_skill, sizeof(tmp_skill));
 		else
-			ShowWarning("mmo_char_fromsql: ignoring invalid skill (id=%u,lv=%u) of character %s (AID=%d,CID=%d)\n", tmp_skill.id, tmp_skill.lv, p->name, p->account_id, p->char_id);
+			ShowWarning("mmo_char_fromsql: Ignorando habilidade invalida (id=%u,lv=%u) do personagem %s (AID=%d,CID=%d)\n", tmp_skill.id, tmp_skill.lv, p->name, p->account_id, p->char_id);
 	}
 	strcat(t_msg, " skills");
 
@@ -1152,7 +1152,7 @@ int mmo_char_fromsql(int char_id, struct mmo_charstatus* p, bool load_everything
 		if( hotkey_num >= 0 && hotkey_num < MAX_HOTKEYS )
 			memcpy(&p->hotkeys[hotkey_num], &tmp_hotkey, sizeof(tmp_hotkey));
 		else
-			ShowWarning("mmo_char_fromsql: ignoring invalid hotkey (hotkey=%d,type=%u,id=%u,lv=%u) of character %s (AID=%d,CID=%d)\n", hotkey_num, tmp_hotkey.type, tmp_hotkey.id, tmp_hotkey.lv, p->name, p->account_id, p->char_id);
+			ShowWarning("mmo_char_fromsql: Ignorando hotkey invalido (hotkey=%d,type=%u,id=%u,lv=%u) do personagem %s (AID=%d,CID=%d)\n", hotkey_num, tmp_hotkey.type, tmp_hotkey.id, tmp_hotkey.lv, p->name, p->account_id, p->char_id);
 	}
 	strcat(t_msg, " hotkeys");
 #endif
@@ -1162,7 +1162,7 @@ int mmo_char_fromsql(int char_id, struct mmo_charstatus* p, bool load_everything
 	strcat(t_msg, " mercenary");
 
 
-	if (save_log) ShowInfo("Loaded char (%d - %s): %s\n", char_id, p->name, t_msg);	//ok. all data load successfuly!
+	if (save_log) ShowInfo("Personagem carregado (%d - %s): %s\n", char_id, p->name, t_msg);	//ok. all data load successfuly!
 	SqlStmt_Free(stmt);
 	StringBuf_Destroy(&buf);
 
@@ -1174,13 +1174,13 @@ int mmo_char_fromsql(int char_id, struct mmo_charstatus* p, bool load_everything
 //==========================================================================================================
 int mmo_char_sql_init(void)
 {
-	ShowInfo("Begin Initializing.......\n");
+	ShowInfo("Inicializando.......\n");
 	char_db_= idb_alloc(DB_OPT_RELEASE_DATA);
 
 	if(char_per_account == 0){
-	  ShowStatus("Chars per Account: 'Unlimited'.......\n");
+		ShowStatus("Personagens por conta:: 'Ilimitados'.......\n");
 	}else{
-		ShowStatus("Chars per Account: '%d'.......\n", char_per_account);
+		ShowStatus("Personagens por conta: '%d'.......\n", char_per_account);
 	}
 
 	//the 'set offline' part is now in check_login_conn ...
@@ -1192,7 +1192,7 @@ int mmo_char_sql_init(void)
 	// (useful when servers crashs and don't clean the database)
 	set_all_offline_sql();
 
-	ShowInfo("Finished initilizing.......\n");
+	ShowInfo("Finalizando inicializacao.......\n");
 
 	return 0;
 }
@@ -1359,7 +1359,7 @@ int make_new_char_sql(struct char_session_data* sd, char* name_, int str, int ag
 			Sql_ShowDebug(sql_handle);
 	}
 
-	ShowInfo("Created char: account: %d, char: %d, slot: %d, name: %s\n", sd->account_id, char_id, slot, name);
+	ShowInfo("Personagem criado: Conta: %d, Personagem: %d, Slot: %d, Nome: %s\n", sd->account_id, char_id, slot, name);
 	return char_id;
 }
 
@@ -1402,7 +1402,7 @@ int delete_char_sql(int char_id)
 
 	if( SQL_SUCCESS != Sql_NextRow(sql_handle) )
 	{
-		ShowError("delete_char_sql: Unable to fetch character data, deletion aborted.\n");
+		ShowError("delete_char_sql: Nao foi possivel modificar data, exclusao personagem abortado.\n");
 		Sql_FreeResult(sql_handle);
 		return -1;
 	}
@@ -1425,7 +1425,7 @@ int delete_char_sql(int char_id)
 	if( ( char_del_level > 0 && base_level >= char_del_level )
 	 || ( char_del_level < 0 && base_level <= -char_del_level )
 	) {
-			ShowInfo("Char deletion aborted: %s, BaseLevel: %i\n", name, base_level);
+			ShowInfo("Abortada exclusao de personagem: %s, Nivel: %i\n", name, base_level);
 			return -1;
 	}
 
@@ -1639,7 +1639,7 @@ int mmo_char_send006b(int fd, struct char_session_data* sd)
 #endif
 
 	if (save_log)
-		ShowInfo("Loading Char Data ("CL_BOLD"%d"CL_RESET")\n",sd->account_id);
+		ShowInfo("Carregando informacoes do personagem ("CL_BOLD"%d"CL_RESET")\n",sd->account_id);
 
 	j = 24 + offset; // offset
 	WFIFOHEAD(fd,j + MAX_CHARS*MAX_CHAR_BUF);
@@ -1795,7 +1795,7 @@ int parse_fromlogin(int fd)
 
 	if(session[fd]->flag.eof) {
 		if (fd == login_fd) {
-			ShowWarning("Connection to login-server lost (connection #%d).\n", fd);
+			ShowWarning("Conexao com o login-server perdida (conexao #%d).\n", fd);
 			login_fd = -1;
 		}
 		do_close(fd);
@@ -1818,12 +1818,12 @@ int parse_fromlogin(int fd)
 
 			if (RFIFOB(fd,2)) {
 				//printf("connect login server error : %d\n", RFIFOB(fd,2));
-				ShowError("Can not connect to login-server.\n");
-				ShowError("The server communication passwords (default s1/p1) are probably invalid.\n");
-				ShowError("Also, please make sure your login db has the correct communication username/passwords and the gender of the account is S.\n");
-				ShowError("The communication passwords are set in map_athena.conf and char_athena.conf\n");
+				ShowError("Nao foi possivel conectar ao login-server.\n");
+				ShowError("A senha padrao de comunicacao com o servidor (padrao s1/p1) sao provavelmente invalidas.\n");
+				ShowError("Tenha certeza que a sua tabela login tenha o nome de usuario e senha corretos e que o genero da conta seja S.\n");
+				ShowError("As configuracoes de comunicacao sao definidas em map_athena.conf e char_athena.conf\n");
 			} else {
-				ShowStatus("Connected to login-server (connection #%d).\n", fd);
+				ShowStatus("Conectado ao login-server (Conexao #%d).\n", fd);
 				
 				//Send online accounts to login server.
 				send_accounts_tologin(INVALID_TIMER, gettick(), 0, 0);
@@ -1831,7 +1831,7 @@ int parse_fromlogin(int fd)
 				// if no map-server already connected, display a message...
 				ARR_FIND( 0, MAX_MAP_SERVERS, i, server[i].fd > 0 && server[i].map[0] );
 				if( i == MAX_MAP_SERVERS )
-					ShowStatus("Awaiting maps from map-server.\n");
+					ShowStatus("Aguardando mapas do map-server.\n");
 			}
 			RFIFOSKIP(fd,3);
 		break;
@@ -2085,7 +2085,7 @@ int parse_fromlogin(int fd)
 			if (new_ip && new_ip != char_ip)
 			{	//Update ip.
 				char_ip = new_ip;
-				ShowInfo("Updating IP for [%s].\n", char_ip_str);
+				ShowInfo("Atualizando IP para [%s].\n", char_ip_str);
 				// notify login server about the change
 				WFIFOHEAD(fd,6);
 				WFIFOW(fd,0) = 0x2736;
@@ -2098,7 +2098,7 @@ int parse_fromlogin(int fd)
 		break;
 
 		default:
-			ShowError("Unknown packet 0x%04x received from login-server, disconnecting.\n", command);
+			ShowError("Packet desconhecido 0x%04x sendo recebido pelo login-server, desconectando.\n", command);
 			set_eof(fd);
 			return 0;
 		}
@@ -2275,7 +2275,7 @@ int parse_frommap(int fd)
 	if(session[fd]->flag.eof) {
 		if (id < MAX_MAP_SERVERS) {
 			unsigned char buf[16384];
-			ShowStatus("Map-server %d (session #%d) has disconnected.\n", id, fd);
+			ShowStatus("Sessao do map-server %d (sessao #%d) foi encerrada.\n", id, fd);
 			//Notify other map servers that this one is gone. [Skotlex]
 			WBUFW(buf,0) = 0x2b20;
 			WBUFL(buf,4) = htonl(server[id].ip);
@@ -2314,9 +2314,9 @@ int parse_frommap(int fd)
 				j++;
 			}
 
-			ShowStatus("Map-Server %d connected: %d maps, from IP %d.%d.%d.%d port %d.\n",
+			ShowStatus("Map-server %d Conectado: %d mapas, no IP %d.%d.%d.%d port %d.\n",
 						id, j, CONVIP(server[id].ip), server[id].port);
-			ShowStatus("Map-server %d loading complete.\n", id);
+			ShowStatus("Map-server %d carregado com sucesso.\n", id);
 			
 			// send name for wisp to player
 			WFIFOHEAD(fd, 3 + NAME_LENGTH);
@@ -2331,7 +2331,7 @@ int parse_frommap(int fd)
 			unsigned char buf[16384];
 			int x;
 			if (j == 0) {
-				ShowWarning("Map-server %d has NO maps.\n", id);
+				ShowWarning("Map-server %d nao possui mapas.\n", id);
 			} else {
 				// Transmitting maps information to the other map-servers
 				WBUFW(buf,0) = 0x2b04;
@@ -2397,7 +2397,7 @@ int parse_frommap(int fd)
 					memcpy(WFIFOP(fd, 14+count*sizeof(struct status_change_data)), &scdata, sizeof(struct status_change_data));
 				}
 				if (count >= 50)
-					ShowWarning("Too many status changes for %d:%d, some of them were not loaded.\n", aid, cid);
+					ShowWarning("Muitas mudancas de status de %d:%d, alguns nao foram carregados.\n", aid, cid);
 				if (count > 0)
 				{
 					WFIFOW(fd,2) = 14 + count*sizeof(struct status_change_data);
@@ -2445,7 +2445,7 @@ int parse_frommap(int fd)
 					memcpy(WFIFOP(fd,14+count*sizeof(struct skill_cooldown_data)), &scd, sizeof(struct skill_cooldown_data));
 				}
 				if( count >= MAX_SKILLCOOLDOWN )
-					ShowWarning("Too many skillcooldowns for %d:%d, some of them were not loaded.\n", aid, cid);
+					ShowWarning("Muitas habilidades conjuradas por %d:%d, algumas podem nao ser carregadas.\n", aid, cid);
 				if( count > 0 )
 				{
 					WFIFOW(fd,2) = 14 + count * sizeof(struct skill_cooldown_data);
@@ -2466,7 +2466,7 @@ int parse_frommap(int fd)
 				return 0;
 			if (RFIFOW(fd,2) != server[id].users) {
 				server[id].users = RFIFOW(fd,2);
-				ShowInfo("User Count: %d (Server: %d)\n", server[id].users, id);
+				ShowInfo("Numero de usuarios: %d (Servidor: %d)\n", server[id].users, id);
 			}
 			RFIFOSKIP(fd, 4);
 			break;
@@ -2521,7 +2521,7 @@ int parse_frommap(int fd)
 				memcpy(&char_dat, RFIFOP(fd,13), sizeof(struct mmo_charstatus));
 				mmo_char_tosql(cid, &char_dat);
 			} else {	//This may be valid on char-server reconnection, when re-sending characters that already logged off.
-				ShowError("parse_from_map (save-char): Received data for non-existant/offline character (%d:%d).\n", aid, cid);
+				ShowError("parse_from_map (save-char): Data de personagem inexistente/offlife recebida! (%d:%d).\n", aid, cid);
 				set_char_online(id, cid, aid);
 			}
 
@@ -3009,7 +3009,7 @@ int parse_frommap(int fd)
 		case 0x2736: // ip address update
 			if (RFIFOREST(fd) < 6) return 0;
 			server[id].ip = ntohl(RFIFOL(fd, 2));
-			ShowInfo("Updated IP address of map-server #%d to %d.%d.%d.%d.\n", id, CONVIP(server[id].ip));
+			ShowInfo("Atualizado endereco de IP do map-server #%d para %d.%d.%d.%d.\n", id, CONVIP(server[id].ip));
 			RFIFOSKIP(fd,6);
 		break;
 
@@ -3021,7 +3021,7 @@ int parse_frommap(int fd)
 			if (r == 2) return 0;	// need more packet
 
 			// no inter server packet. no char server packet -> disconnect
-			ShowError("Unknown packet 0x%04x from map server, disconnecting.\n", RFIFOW(fd,0));
+			ShowError("Packet desconhecido 0x%04x recebido pelo map-server, desconectando.\n", RFIFOW(fd,0));
 			set_eof(fd);
 			return 0;
 		}
@@ -3066,10 +3066,10 @@ int lan_subnetcheck(uint32 ip)
 	int i;
 	ARR_FIND( 0, subnet_count, i, (subnet[i].char_ip & subnet[i].mask) == (ip & subnet[i].mask) );
 	if( i < subnet_count ) {
-		ShowInfo("Subnet check [%u.%u.%u.%u]: Matches "CL_CYAN"%u.%u.%u.%u/%u.%u.%u.%u"CL_RESET"\n", CONVIP(ip), CONVIP(subnet[i].char_ip & subnet[i].mask), CONVIP(subnet[i].mask));
+		ShowInfo("Verificando subnet [%u.%u.%u.%u]: Matches "CL_CYAN"%u.%u.%u.%u/%u.%u.%u.%u"CL_RESET"\n", CONVIP(ip), CONVIP(subnet[i].char_ip & subnet[i].mask), CONVIP(subnet[i].mask));
 		return subnet[i].char_ip;
 	} else {
-		ShowInfo("Subnet check [%u.%u.%u.%u]: "CL_CYAN"WAN"CL_RESET"\n", CONVIP(ip));
+		ShowInfo("Verificando subnet [%u.%u.%u.%u]: "CL_CYAN"WAN"CL_RESET"\n", CONVIP(ip));
 		return 0;
 	}
 }
@@ -3198,7 +3198,7 @@ static void char_delete2_accept(int fd, struct char_session_data* sd)
 
 	char_id = RFIFOL(fd,2);
 
-	ShowInfo(CL_RED"Request Char Deletion: "CL_GREEN"%d (%d)"CL_RESET"\n", sd->account_id, char_id);
+	ShowInfo(CL_RED"Requisitando exclusao de personagem: "CL_GREEN"%d (%d)"CL_RESET"\n", sd->account_id, char_id);
 
 	// construct "YY-MM-DD"
 	birthdate[0] = RFIFOB(fd,6);
@@ -3343,7 +3343,7 @@ int parse_char(int fd)
 			int sex = RFIFOB(fd,16);
 			RFIFOSKIP(fd,17);
 
-			ShowInfo("request connect - account_id:%d/login_id1:%d/login_id2:%d\n", account_id, login_id1, login_id2);
+			ShowInfo("Conexao requisitada - account_id:%d/login_id1:%d/login_id2:%d\n", account_id, login_id1, login_id2);
 
 			if (sd) {
 				//Received again auth packet for already authentified account?? Discard it.
@@ -3441,7 +3441,7 @@ int parse_char(int fd)
 					charlog_db, sd->account_id, slot, esc_name) )
 					Sql_ShowDebug(sql_handle);
 			}
-			ShowInfo("Selected char: (Account %d: %d - %s)\n", sd->account_id, slot, char_dat.name);
+			ShowInfo("Personagem selecionado: (Conta %d: %d - %s)\n", sd->account_id, slot, char_dat.name);
 
 			// searching map server
 			i = search_mapserver(cd->last_point.map, -1, -1);
@@ -3452,7 +3452,7 @@ int parse_char(int fd)
 				//First check that there's actually a map server online.
 				ARR_FIND( 0, MAX_MAP_SERVERS, j, server[j].fd >= 0 && server[j].map[0] );
 				if (j == MAX_MAP_SERVERS) {
-					ShowInfo("Connection Closed. No map servers available.\n");
+					ShowInfo("Conexa0o fechada. Map-server nao disponivel.\n");
 					WFIFOHEAD(fd,3);
 					WFIFOW(fd,0) = 0x81;
 					WFIFOB(fd,2) = 1; // 01 = Server closed
@@ -3478,14 +3478,14 @@ int parse_char(int fd)
 					cd->last_point.x = 94;
 					cd->last_point.y = 103;
 				} else {
-					ShowInfo("Connection Closed. No map server available that has a major city, and unable to find map-server for '%s'.\n", mapindex_id2name(cd->last_point.map));
+					ShowInfo("Conexao fechada. Map-server indisponivel para '%s'.\n", mapindex_id2name(cd->last_point.map));
 					WFIFOHEAD(fd,3);
 					WFIFOW(fd,0) = 0x81;
 					WFIFOB(fd,2) = 1; // 01 = Server closed
 					WFIFOSET(fd,3);
 					break;
 				}
-				ShowWarning("Unable to find map-server for '%s', sending to major city '%s'.\n", mapindex_id2name(cd->last_point.map), mapindex_id2name(j));
+				ShowWarning("Nao foi possivel encontrar o mapa '%s', enviando para cidade principal '%s'.\n", mapindex_id2name(cd->last_point.map), mapindex_id2name(j));
 				cd->last_point.map = j;
 			}
 
@@ -3493,7 +3493,7 @@ int parse_char(int fd)
 			//FIXME: is this case even possible? [ultramage]
 			if ((map_fd = server[i].fd) < 1 || session[map_fd] == NULL)
 			{
-				ShowError("parse_char: Attempting to write to invalid session %d! Map Server #%d disconnected.\n", map_fd, i);
+				ShowError("parse_char: Tentativa de carregamento de sessao invalida %d! Map Server #%d desconectado.\n", map_fd, i);
 				server[i].fd = -1;
 				memset(&server[i], 0, sizeof(struct mmo_map_server));
 				//Send server closed.
@@ -3584,7 +3584,7 @@ int parse_char(int fd)
 		{
 			int cid = RFIFOL(fd,2);
 
-			ShowInfo(CL_RED"Request Char Deletion: "CL_GREEN"%d (%d)"CL_RESET"\n", sd->account_id, cid);
+			ShowInfo(CL_RED"Requisitada exclusao de personagem: "CL_GREEN"%d (%d)"CL_RESET"\n", sd->account_id, cid);
 			memcpy(email, RFIFOP(fd,6), 40);
 			RFIFOSKIP(fd,( cmd == 0x68) ? 46 : 56);
 			
@@ -3782,7 +3782,7 @@ int parse_char(int fd)
 
 		// unknown packet received
 		default:
-			ShowError("parse_char: Received unknown packet "CL_WHITE"0x%x"CL_RESET" from ip '"CL_WHITE"%s"CL_RESET"'! Disconnecting!\n", RFIFOW(fd,0), ip2str(ipl, NULL));
+			ShowError("parse_char: Recebido packet desconhecido "CL_WHITE"0x%x"CL_RESET" do IP '"CL_WHITE"%s"CL_RESET"'! Desconectando!\n", RFIFOW(fd,0), ip2str(ipl, NULL));
 			set_eof(fd);
 			return 0;
 		}
@@ -3795,7 +3795,7 @@ int parse_char(int fd)
 // Console Command Parser [Wizputer]
 int parse_console(const char* command)
 {
-	ShowNotice("Console command: %s\n", command);
+	ShowNotice("Comando no console: %s\n", command);
 
 	if( strcmpi("shutdown", command) == 0 || strcmpi("exit", command) == 0 || strcmpi("quit", command) == 0 || strcmpi("end", command) == 0 )
 		runflag = 0;
@@ -3803,9 +3803,9 @@ int parse_console(const char* command)
 		ShowInfo(CL_CYAN"Console: "CL_BOLD"I'm Alive."CL_RESET"\n");
 	else if( strcmpi("help", command) == 0 )
 	{
-		ShowInfo("To shutdown the server:\n");
+		ShowInfo("Para desligar o servidor:\n");
 		ShowInfo("  'shutdown|exit|quit|end'\n");
-		ShowInfo("To know if server is alive:\n");
+		ShowInfo("Para saber se o servidor esta conectado:\n");
 		ShowInfo("  'alive|status'\n");
 	}
 
@@ -3931,7 +3931,7 @@ int check_connect_login_server(int tid, unsigned int tick, int id, intptr data)
 	if (login_fd > 0 && session[login_fd] != NULL)
 		return 0;
 
-	ShowInfo("Attempt to connect to login-server...\n");
+	ShowInfo("Tentando conectar-se ao login-server...\n");
 	login_fd = make_connection(login_ip, login_port);
 	if (login_fd == -1)
 	{	//Try again later. [Skotlex]
@@ -4015,11 +4015,11 @@ int char_lan_config_read(const char *lancfgName)
 	char line[1024], w1[64], w2[64], w3[64], w4[64];
 	
 	if((fp = fopen(lancfgName, "r")) == NULL) {
-		ShowWarning("LAN Support configuration file is not found: %s\n", lancfgName);
+		ShowWarning("Arquivos de configuracao de LAN não encontrados: %s\n", lancfgName);
 		return 1;
 	}
 
-	ShowInfo("Reading the configuration file %s...\n", lancfgName);
+	ShowInfo("Carregando arquivos de configuracao %s...\n", lancfgName);
 
 	while(fgets(line, sizeof(line), fp))
 	{
@@ -4029,7 +4029,7 @@ int char_lan_config_read(const char *lancfgName)
 
 		if(sscanf(line,"%[^:]: %[^:]:%[^:]:%[^\r\n]", w1, w2, w3, w4) != 4) {
 	
-			ShowWarning("Error syntax of configuration file %s in line %d.\n", lancfgName, line_num);	
+			ShowWarning("Erro na sintaxe do arquivo de configuracao %s na linha %d.\n", lancfgName, line_num);	
 			continue;
 		}
 
@@ -4046,7 +4046,7 @@ int char_lan_config_read(const char *lancfgName)
 
 			if( (subnet[subnet_count].char_ip & subnet[subnet_count].mask) != (subnet[subnet_count].map_ip & subnet[subnet_count].mask) )
 			{
-				ShowError("%s: Configuration Error: The char server (%s) and map server (%s) belong to different subnetworks!\n", lancfgName, w3, w4);
+				ShowError("%s: Erro de configuracao: O char-server (%s) e o map-server (%s) pertencem a diferentes subnets!\n", lancfgName, w3, w4);
 				continue;
 			}
 				
@@ -4054,7 +4054,7 @@ int char_lan_config_read(const char *lancfgName)
 		}
 	}
 
-	ShowStatus("Read information about %d subnetworks.\n", subnet_count);
+	ShowStatus("Carregadas informacoes sobre %d subnetworks.\n", subnet_count);
 
 	fclose(fp);
 	return 0;
@@ -4066,10 +4066,10 @@ void sql_config_read(const char* cfgName)
 	char line[1024], w1[1024], w2[1024];
 	FILE* fp;
 
-	ShowInfo("Reading file %s...\n", cfgName);
+	ShowInfo("Carregando arquivo %s...\n", cfgName);
 
 	if ((fp = fopen(cfgName, "r")) == NULL) {
-		ShowError("file not found: %s\n", cfgName);
+		ShowError("Arquivo nao encontrado: %s\n", cfgName);
 		return;
 	}
 
@@ -4136,7 +4136,7 @@ void sql_config_read(const char* cfgName)
 			sql_config_read(w2);
 	}
 	fclose(fp);
-	ShowInfo("Done reading %s.\n", cfgName);
+	ShowInfo("Finalizada a leitura do arquivo %s.\n", cfgName);
 }
 #ifndef TXT_SQL_CONVERT
 
@@ -4146,11 +4146,11 @@ int char_config_read(const char* cfgName)
 	FILE* fp = fopen(cfgName, "r");
 
 	if (fp == NULL) {
-		ShowError("Configuration file not found: %s.\n", cfgName);
+		ShowError("Arquivo de configuracao nao encontrado: %s.\n", cfgName);
 		return 1;
 	}
 
-	ShowInfo("Reading configuration file %s...\n", cfgName);
+	ShowInfo("Carregando arquivo de configuracao %s...\n", cfgName);
 	while(fgets(line, sizeof(line), fp))
 	{
 		if (line[0] == '/' && line[1] == '/')
@@ -4174,7 +4174,7 @@ int char_config_read(const char* cfgName)
 			safestrncpy(passwd, w2, sizeof(passwd));
 		} else if (strcmpi(w1, "server_name") == 0) {
 			safestrncpy(server_name, w2, sizeof(server_name));
-			ShowStatus("%s server has been initialized\n", w2);
+			ShowStatus("%s Foi inicializado!\n", w2);
 		} else if (strcmpi(w1, "wisp_server_name") == 0) {
 			if (strlen(w2) >= 4) {
 				safestrncpy(wisp_server_name, w2, sizeof(wisp_server_name));
@@ -4184,7 +4184,7 @@ int char_config_read(const char* cfgName)
 			login_ip = host2ip(w2);
 			if (login_ip) {
 				safestrncpy(login_ip_str, w2, sizeof(login_ip_str));
-				ShowStatus("Login server IP address : %s -> %s\n", w2, ip2str(login_ip, ip_str));
+				ShowStatus("Login server endereco de IP : %s -> %s\n", w2, ip2str(login_ip, ip_str));
 			}
 		} else if (strcmpi(w1, "login_port") == 0) {
 			login_port = atoi(w2);
@@ -4193,14 +4193,14 @@ int char_config_read(const char* cfgName)
 			char_ip = host2ip(w2);
 			if (char_ip){
 				safestrncpy(char_ip_str, w2, sizeof(char_ip_str));
-				ShowStatus("Character server IP address : %s -> %s\n", w2, ip2str(char_ip, ip_str));
+				ShowStatus("Char server endereco de IP : %s -> %s\n", w2, ip2str(char_ip, ip_str));
 			}
 		} else if (strcmpi(w1, "bind_ip") == 0) {
 			char ip_str[16];
 			bind_ip = host2ip(w2);
 			if (bind_ip) {
 				safestrncpy(bind_ip_str, w2, sizeof(bind_ip_str));
-				ShowStatus("Character server binding IP address : %s -> %s\n", w2, ip2str(bind_ip, ip_str));
+				ShowStatus("Char server binding IP address : %s -> %s\n", w2, ip2str(bind_ip, ip_str));
 			}
 		} else if (strcmpi(w1, "char_port") == 0) {
 			char_port = atoi(w2);
@@ -4231,7 +4231,7 @@ int char_config_read(const char* cfgName)
 				continue;
 			start_point.map = mapindex_name2id(map);
 			if (!start_point.map)
-				ShowError("Specified start_point %s not found in map-index cache.\n", map);
+				ShowError("O start_point %s nao foi encontrado no map-index.\n", map);
 			start_point.x = x;
 			start_point.y = y;
 		} else if (strcmpi(w1, "start_zeny") == 0) {
@@ -4293,13 +4293,13 @@ int char_config_read(const char* cfgName)
 	}
 	fclose(fp);
 
-	ShowInfo("Done reading %s.\n", cfgName);
+	ShowInfo("Finalizada a leitura do arquivo %s.\n", cfgName);
 	return 0;
 }
 
 void do_final(void)
 {
-	ShowStatus("Terminating server.\n");
+	ShowStatus("Encerrando servidor.\n");
 
 	set_all_offline(-1);
 	set_all_offline_sql();
@@ -4355,22 +4355,22 @@ int do_init(int argc, char **argv)
 	sql_config_read(SQL_CONF_NAME);
 
 	if (strcmp(userid, "s1")==0 && strcmp(passwd, "p1")==0) {
-		ShowError("Using the default user/password s1/p1 is NOT RECOMMENDED.\n");
-		ShowNotice("Please edit your 'login' table to create a proper inter-server user/password (gender 'S')\n");
-		ShowNotice("And then change the user/password to use in conf/char_athena.conf (or conf/import/char_conf.txt)\n");
+		ShowError("Usar o usuario/senha padrao NAO E RECOMENDADO.\n");
+		ShowNotice("Por favor edite a sua tabela 'login' para criar uma nova conexao com o inter_server (genero 'S')\n");
+		ShowNotice("E mude o usuario/senha nos arquivos conf/char_athena.conf (ou conf/import/char_conf.txt)\n");
 	}
 
-	ShowInfo("Finished reading the char-server configuration.\n");
+	ShowInfo("Terminada leitura das configuracoes do char-server.\n");
 
 	inter_init_sql((argc > 2) ? argv[2] : inter_cfgName); // inter server ÃÊ±âÈ­
-	ShowInfo("Finished reading the inter-server configuration.\n");
+	ShowInfo("Terminada leitura do inter_server.\n");
 	
-	ShowInfo("Initializing char server.\n");
+	ShowInfo("Inicializando char-server.\n");
 	auth_db = idb_alloc(DB_OPT_RELEASE_DATA);
 	online_char_db = idb_alloc(DB_OPT_RELEASE_DATA);
 	mmo_char_sql_init();
 	char_read_fame_list(); //Read fame lists.
-	ShowInfo("char server initialized.\n");
+	ShowInfo("Char-server iniciado.\n");
 
 	set_defaultparse(parse_char);
 
@@ -4380,9 +4380,9 @@ int do_init(int argc, char **argv)
 		ip2str(addr_[0], ip_str);
 
 		if (naddr_ > 1)
-			ShowStatus("Multiple interfaces detected..  using %s as our IP address\n", ip_str);
+			ShowStatus("Multiplas interfaces detectadas..  usando %s como endereco de IP\n", ip_str);
 		else
-			ShowStatus("Defaulting to %s as our IP address\n", ip_str);
+			ShowStatus("Definindo %s como endereço de IP padrao\n", ip_str);
 		if (!login_ip) {
 			safestrncpy(login_ip_str, ip_str, sizeof(login_ip_str));
 			login_ip = str2ip(login_ip_str);
@@ -4423,25 +4423,25 @@ int do_init(int argc, char **argv)
 	
 	//Cleaning the tables for NULL entrys @ startup [Sirius]
 	//Chardb clean
-	ShowInfo("Cleaning the '%s' table...\n", char_db);
+	ShowInfo("Limpando a tabela '%s'...\n", char_db);
 	if( SQL_ERROR == Sql_Query(sql_handle, "DELETE FROM `%s` WHERE `account_id` = '0'", char_db) )
 		Sql_ShowDebug(sql_handle);
 
 	//guilddb clean
-    ShowInfo("Cleaning the '%s' table...\n", guild_db);
+    ShowInfo("Limpando a tabela '%s'...\n", guild_db);
 	if( SQL_ERROR == Sql_Query(sql_handle, "DELETE FROM `%s` WHERE `guild_lv` = '0' AND `max_member` = '0' AND `exp` = '0' AND `next_exp` = '0' AND `average_lv` = '0'", guild_db) )
 		Sql_ShowDebug(sql_handle);
 
 	//guildmemberdb clean
-	ShowInfo("Cleaning the '%s' table...\n", guild_member_db);
+	ShowInfo("Limpando a tabela '%s'...\n", guild_member_db);
 	if( SQL_ERROR == Sql_Query(sql_handle, "DELETE FROM `%s` WHERE `guild_id` = '0' AND `account_id` = '0' AND `char_id` = '0'", guild_member_db) )
 		Sql_ShowDebug(sql_handle);
 
-	ShowInfo("End of char server initilization function.\n");
+	ShowInfo("Finalizada a inicializacao do char-server\n");
 
-	ShowInfo("open port %d.....\n",char_port);
+	ShowInfo("Abrindo porta %d.....\n",char_port);
 	char_fd = make_listen_bind(bind_ip, char_port);
-	ShowStatus("The char-server is "CL_GREEN"ready"CL_RESET" (Server is listening on the port %d).\n\n", char_port);
+	ShowStatus("O char-server esta "CL_GREEN"Pronto"CL_RESET" (Servidor conectado na porta %d).\n\n", char_port);
 
 	return 0;
 }

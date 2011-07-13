@@ -90,7 +90,7 @@ static void sig_proc(int sn)
 #ifndef _WIN32
 	case SIGXFSZ:
 		// ignore and allow it to set errno to EFBIG
-		ShowWarning ("Max file size reached!\n");
+		ShowWarning ("Tamanho máximo de arquivo atingido!\n");
 		//run_flag = 0;	// should we quit?
 		break;
 	case SIGPIPE:
@@ -178,16 +178,16 @@ static void display_title(void)
 	//ClearScreen(); // clear screen and go up/left (0, 0 position in text)
 	ShowMessage("\n");
 	ShowMessage(""CL_WTBL"          (=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=)"CL_CLL""CL_NORMAL"\n");
-	ShowMessage(""CL_XXBL"          ("CL_BT_YELLOW"       Equipe Cronus de Desenvolvimento Apresenta        "CL_XXBL")"CL_CLL""CL_NORMAL"\n");
+	ShowMessage(""CL_XXBL"          ("CL_BT_YELLOW"               Modificacao do emulador Cronus            "CL_XXBL")"CL_CLL""CL_NORMAL"\n");
 	ShowMessage(""CL_XXBL"          ("CL_BOLD"      _________                                          "CL_XXBL")"CL_CLL""CL_NORMAL"\n");
 	ShowMessage(""CL_XXBL"          ("CL_BOLD"      \\_   ___ \\_______  ____   ____  __ __  ______      "CL_XXBL")"CL_CLL""CL_NORMAL"\n");
 	ShowMessage(""CL_XXBL"          ("CL_BOLD"      /    \\  \\/\\_  __ \\/  _ \\ /    \\|  |  \\/  ___/      "CL_XXBL")"CL_CLL""CL_NORMAL"\n");
 	ShowMessage(""CL_XXBL"          ("CL_BOLD"      \\     \\____|  | \\(  <_> )   |  \\  |  /\\___ \\       "CL_XXBL")"CL_CLL""CL_NORMAL"\n");
 	ShowMessage(""CL_XXBL"          ("CL_BOLD"       \\______  /|__|   \\____/|___|  /____//____  >      "CL_XXBL")"CL_CLL""CL_NORMAL"\n");
 	ShowMessage(""CL_XXBL"          ("CL_BOLD"              \\/                   \\/           \\/       "CL_XXBL")"CL_CLL""CL_NORMAL"\n");
-	ShowMessage(""CL_XXBL"          ("CL_BT_RED"                          Renewal                         "CL_XXBL")"CL_CLL""CL_NORMAL"\n");
+	ShowMessage(""CL_XXBL"          ("CL_BT_RED"                     Cronus-P Renewal                    "CL_XXBL")"CL_CLL""CL_NORMAL"\n");
 	ShowMessage(""CL_XXBL"          ("CL_BOLD"                  www.cronus-emulator.com                "CL_XXBL")"CL_CLL""CL_NORMAL"\n");
-	ShowMessage(""CL_XXBL"          ("CL_BT_YELLOW"      Baseado no eAthena (c) 2005-2011 Projeto Cronus    "CL_XXBL")"CL_CLL""CL_NORMAL"\n");
+	ShowMessage(""CL_XXBL"          ("CL_BT_YELLOW"              Baseado no Cronus Emulator (c)             "CL_XXBL")"CL_CLL""CL_NORMAL"\n");
 	ShowMessage(""CL_XXBL"          ("CL_BOLD"                                                         "CL_XXBL")"CL_CLL""CL_NORMAL"\n");
 	ShowMessage(""CL_WTBL"          (=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=)"CL_CLL""CL_NORMAL"\n\n");
 
