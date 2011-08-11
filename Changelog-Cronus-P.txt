@@ -1,0 +1,101 @@
+Lista de mods:
+CRONUS-P:
+
+-Traduzido parcialmente o login-server e o char-server_sql
+-Terror ácido teve dano dobrado
+-Troca espiritual é agora no máximo 50% do sp do alvo
+-NJ_Issen(Golpe Mortal) e PL_SACRIFICE(Sacrifício) não são
+afetados por cartas Raciais(Hidra, Ovo de Pecopeco etc..)
+-Brisa cortante teve melhora no dano
+-Lanças de fogo, gelo e relâmpago tiveram cast reduzido em 50%
+-Tao-Gunka agora reduz a defesa em 50%
+-Carta Suma sacerdotiza Magaleta conjura assumptio em nível 5
+-Alterado custo de sp da habilidade Corte das Sombras para 10
+-Alterado custo de sp da habilidade Corte da Névoa para 15
+
+As Mudanças acima são do dia 13/07/2011 no KRO
+
+*Ninjas:
+-Nerf no dano da habilidade arremessar Huuma, o dano estava absurdo.
+
+*Cavalheiros:
+-Pequeno nerf no dano do perfurar em espiral.
+
+*Mecanicos:
+-Removidos os Gentle Touchs que seriam removidos pelo bate-estacas.
+
+*Nomes e identificações na pasta npc parcialmente traduzidos, futuramente a pasta inteira será traduzida.
+
+*Sicários:
+-Nevoeiro Tóxico não remove mais o efeito de veneno da arma.
+-Passo sombrio teve mudança no Alcance.
+
+*Mecânicos:
+-Brandir Machado melhorado no dano.
+-Reconfigurar agora utiliza os pontos.(Mesmos das skills de sorcerer)
+-Bate-Estacas remove agora também os seguintes status:
+Gentle Touch: Change, Gentle Touch: Revitalize, Shield Reflect, Defending Aura, Reflect Damage, Prestige, Banding.
+-Scanner Infravermelho teve delay reduzido de 15s para 10s.
+-Machado Bumerangue teve redução no delay e aumento no alcance.
+
+*Arce Bispos:
+-Sopro Divino teve delay diminuido.
+-Curatio teve seu delay alterado para 3s.
+-Expiatio pode ser usado em jogadores.
+
+*Sura:
+-Salto relâmpago tem delay de 1s agora.
+-Chakra da energia tem delay de 1s agora.
+-Chakra a Fúria tem delay de 1s agora.
+
+*Lordes:
+-Perfurar em espiral agora pode ser usado com as espadas.
+
+*Cavalheiros Runicos:
+-Melhora no dano da Lança de Mil pontas.
+-Redução no cast da lança de mil pontas.
+
+*Bioquimicos:
+-Armadilha de espinhos não pode mais ser colocada no pé de alvos.
+
+*Ninjas:
+-Golpe Mortal implementado com sucesso.(Implementada a nova fórmula da renovação, isso inclui os hits pelas imagens falsas etc..)
+-Lançar Kunais deve seu dano aumentado.
+-Arremessar Huuma teve dano melhorado.
+
+*Cavalheiros Runicos:
+-Perfurar em espiral teve uma melhora grande em seu dano para se adaptar a nova fórmula.(Baseado em testes no BRO)
+-Sopro do Dragão teve seu cast reduzido.
+
+*Sacerdotes:
+-Graça Divina remove o status Exílio.(Withe Imprision)
+
+*Arce Bispos:
+-Adoramus teve seu cast alterado.
+-Lauda Ramus agora remove também os status: Burning e Cristalize(Diamond Dust/Pó de diamante)
+-Lauma Agnus remove também os status: Grito da Mandragora e Sono Profundo.
+-Gênese teve melhora de 80% para 90% nas chances de sucesso.
+
+*Feiticeiros:
+-A habilidade tornado foi bloqueada na Torre sem fim.
+
+*Sentinelas:
+-As armadilhas Cobalto, Escarlate, Ocre e Esmeralda agora consomem os pontos, que são os ids respectivos: 6360.6361,6362 e 6363.(São os mesmos requiridos pelas insignias de Feiticeiros)
+-Tempestade de flechas teve melhora no dano.
+
+*Magos:
+-Cast do escudo mágico foi reduzido.(Pretendo implementar a fórmula nova em futuras compilações)
+
+*Mecânicos:
+-Escanner Infravermelho remove a habilidade Vinculo Sombrio.(Futuramente irei habilitar que todas as habilidades de revelação possam cancelar tal habilidade)
+
+*Renegados:
+-Manhole só pode ser usado em GVG e PVP.
+
+*Musa e trovador:
+-Alterada a habilidade Ruido Estridente, estava definida como baseada na arma, no entanto é mágica.
+
+*Shura:
+-A habilidade portões do inferno agora requer o estado Fúria para ser utilizada.
+
+Nota importante: Todas as modificações acima, são parte das atualizações no KRO, nenhuma é sobre opinião pessoal ou requisitada.
