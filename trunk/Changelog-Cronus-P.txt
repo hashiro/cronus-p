@@ -1,5 +1,5 @@
 Lista de mods:
-CRONUS-P:
+CRONUS-P::
 
 -Traduzido parcialmente o login-server e o char-server_sql
 -Terror ácido teve dano dobrado
